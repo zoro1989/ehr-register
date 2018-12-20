@@ -1,0 +1,40 @@
+/* 覆盖mint-ui的primary颜色，改为自己UI的主题色 */
+@import "variable.styl"
+#app
+  .mint-header
+    background-color: $color-theme
+  .mint-button:not(.is-disabled):active::after
+    opacity: .2 /* .6 */
+  .mint-button--primary
+    background-color: $color-theme
+  .mint-button--primary.is-plain
+    border: 1px solid $color-theme;
+    color: $color-theme
+  .mint-badge.is-primary
+    background-color: $color-theme
+  .mint-switch-input:checked + .mint-switch-core
+    border-color: $color-theme
+    background-color: $color-theme
+  .mint-navbar .mint-tab-item.is-selected
+    border-bottom: 3px solid $color-theme
+    color: $color-theme
+  .mint-tabbar > .mint-tab-item.is-selected
+    color: $color-theme
+  .mint-searchbar-cancel
+    color: $color-theme
+  .mint-checkbox-input:checked + .mint-checkbox-core
+    background-color: $color-theme
+    border-color: $color-theme
+  .mint-radio-input:checked + .mint-radio-core
+    background-color: $color-theme
+    border-color: $color-theme
+  .mt-range-progress
+    background-color: $color-theme
+  .mt-progress-progress
+    background-color: $color-theme
+  .mint-msgbox-confirm
+    color: $color-theme
+  .mint-msgbox-confirm:active
+    color: $color-theme
+  .mint-datetime-action
+    color: $color-theme

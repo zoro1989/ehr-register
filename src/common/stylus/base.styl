@@ -1,0 +1,61 @@
+@import "variable.styl"
+@import "mixin.styl"
+
+body, html
+  line-height: 1
+  font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback'
+  user-select: none
+  -webkit-tap-highlight-color: transparent
+  background: $color-background
+  color: $color-text
+  font-size: 14px
+  height: 100%
+  box-sizing: border-box
+  #app
+    height: 100%;
+    .type-picker
+      width: 100%
+    .only-month .picker-items > .picker-slot:nth-child(3)
+      display: none
+    //main-container全局样式
+    .main-container
+      overflow: hidden
+      height: 100%
+      position: relative
+      transition: margin-left .28s
+      .icon-button
+        extend-click()
+      .app-main
+        /*50 = navbar  */
+        position: absolute
+        width: 100%
+        top: 40px
+        left: 0
+        right: 0
+        bottom: 0
+        overflow: scroll
+        -webkit-overflow-scrolling: touch
+        //background-color: #f0f2f5
+        padding: 10px
+      .app-container
+        padding: 20px
+
+*,
+*:before,
+*:after
+  box-sizing: inherit
+
+a,
+a:focus,
+a:hover
+  cursor: pointer
+  color: inherit
+  outline: none
+  text-decoration: none
+
+div:focus
+  outline: none
+
+a:focus,
+a:active
+  outline: none
