@@ -3,13 +3,11 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import '@/common/icons' // icon
-import '@/common/js/permission' // permission control
 import fastclick from 'fastclick'
 import 'common/stylus/index.styl'
-import MintUI from 'mint-ui'
-import 'mint-ui/lib/style.css'
+import Cube from 'cube-ui'
 
-Vue.use(MintUI)
+Vue.use(Cube)
 Vue.config.productionTip = false
 /* eslint-disable no-new */
 fastclick.attach(document.body)

@@ -3,7 +3,9 @@
 // let apiPath = 'http://rancode.jymenu.com/'
 let apiPath = '/'
 const api = {
-  employeeAttrConfig: apiPath + 'api/employee/attr/config/'
+  employeeAttrQuery: apiPath + 'entry/form/query',
+  employeeAttrGet: apiPath + 'entry/form/get/',
+  employeeAttrConfig: apiPath + 'entry/form/config/'
 }
 
 const apiDict = {
@@ -11,7 +13,7 @@ const apiDict = {
 }
 
 const apiStatus = {
-  success: 20000
+  success: '0'
 }
 
 export { api, apiDict, apiStatus }

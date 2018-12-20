@@ -1,12 +1,13 @@
 import axios from 'axios'
-import { Toast } from 'mint-ui'
 import { apiStatus } from '@/config'
 import router from '@/router'
+import NProgress from 'nprogress'
 // import {getToken} from 'common/js/cache'
 
 axios.defaults.withCredentials = true
 
 let fetch = (type, url, params, isFormData = true, showMessage = false) => {
+  NProgress.start()
   let service = axios.create({
     timeout: 30000
   })
@@ -22,22 +23,36 @@ let fetch = (type, url, params, isFormData = true, showMessage = false) => {
 
   service.interceptors.response.use(response => {
     // 如果服务器出错，做出相应的处理，response.data后面的内容根据后端接口修改
+    NProgress.done()
     let res = response.data
     if (res.code !== apiStatus.success) {
       if (url !== 'login' && res.result === '401') {
         router.push('/login')
       }
-      Toast('错误：' + res.msg)
+      const toast = this.$createToast({
+        time: 1000,
+        txt: '错误：' + res.msg
+      })
+      toast.show()
       return Promise.reject(res)
     } else {
       if (showMessage) {
-        Toast(res.msg)
+        const toast = this.$createToast({
+          time: 1000,
+          txt: res.msg
+        })
+        toast.show()
       }
       return res
     }
   }, error => {
+    NProgress.done()
     console.log('response error', error)
-    Toast('服务器出错：' + error)
+    const toast = this.$createToast({
+      time: 1000,
+      txt: '服务器出错：' + error
+    })
+    toast.show()
     return Promise.reject(error)
   })
 

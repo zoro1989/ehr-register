@@ -6,39 +6,36 @@
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <mt-field class="el-input" placeholder="请输入用户名" v-model="loginForm.username"></mt-field>
+        <cube-input class="el-input" placeholder="请输入姓名" v-model="loginForm.empName"></cube-input>
       </div>
       <div class="el-form-item">
         <span class="svg-container">
-          <svg-icon icon-class="password" />
+          <svg-icon icon-class="mobile" />
         </span>
-        <mt-field class="el-input" placeholder="请输入密码" :type="pwdType" v-model="loginForm.password" @keyup.enter.native="handleLogin"></mt-field>
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon icon-class="eye" />
-        </span>
+        <cube-input class="el-input" placeholder="请输入手机号" type="number" v-model="loginForm.mobile" @keyup.enter.native="handleLogin"></cube-input>
       </div>
       <div>
-        <mt-button type="primary" style="width:100%;" @click.native.prevent="handleLogin">登录</mt-button>
+        <cube-button type="primary" style="width:100%;" @click.native.prevent="handleLogin">登录</cube-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { isvalidUsername } from '@/utils/validate'
-import { setToken } from '@/common/js/cache'
-import { Toast, Indicator } from 'mint-ui'
+import { validateTel } from '@/utils/validate'
+import { api } from '@/config'
+import fetch from 'utils/fetch'
 export default {
   name: 'Login',
   data() {
     return {
       loginForm: {
-        username: 'admin',
-        password: 'admin'
+        empName: '王五',
+        mobile: '13364549821'
       },
       loading: false,
-      pwdType: 'password',
-      redirect: undefined
+      redirect: undefined,
+      corpId: this.$route.query.corpId || ''
     }
   },
   watch: {
@@ -50,29 +47,25 @@ export default {
     }
   },
   methods: {
-    showPwd() {
-      if (this.pwdType === 'password') {
-        this.pwdType = ''
-      } else {
-        this.pwdType = 'password'
-      }
-    },
     handleLogin() {
-      if (!isvalidUsername(this.loginForm.username)) {
-        Toast('请输入正确的用户名')
+      if (!validateTel(this.loginForm.mobile)) {
+        const toast = this.$createToast({
+          time: 1000,
+          txt: '请输入正确的手机号'
+        })
+        toast.show()
         return
       }
-      if (this.loginForm.password.length < 5) {
-        Toast('密码不能小于5位')
-        return
-      }
-      Indicator.open()
-      setTimeout(() => {
-        Toast('登录成功')
-        setToken('123')
-        this.$router.push({ path: this.redirect || '/' })
-        Indicator.close()
-      }, 2000)
+      this.loginForm.corpId = this.corpId
+      fetch('get', api.employeeAttrQuery, this.loginForm).then((res) => {
+        const toast = this.$createToast({
+          time: 1000,
+          txt: '登录成功'
+        })
+        toast.show()
+        this.$router.push(`/home/index/${res.data}/${this.corpId}`)
+      }).catch(() => {
+      })
     }
   }
 }
@@ -108,6 +101,8 @@ export default {
         line-height: 36px
         font-size: 14px
         margin-bottom: 22px;
+        .cube-input::after
+          content: none
         .el-input
           position: relative
           display: inline-block
@@ -115,7 +110,7 @@ export default {
           height: 47px
           background: transparent
           width: 85%
-          .mint-cell-wrapper
+          .cube-input-field
             background-image: none
           input
             background: transparent

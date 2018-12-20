@@ -13,6 +13,12 @@ export function validateURL(textval) {
   return urlregex.test(textval)
 }
 
+/* 合法手机号 */
+export function validateTel(textval) {
+  const urlregex = /^1(3|4|5|7|8)\d{9}$/
+  return urlregex.test(textval)
+}
+
 /* 小写字母 */
 export function validateLowerCase(str) {
   const reg = /^[a-z]+$/

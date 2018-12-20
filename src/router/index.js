@@ -12,20 +12,13 @@ export default new Router({
       component: () => import('@/views/login/index')
     },
     {
-      path: '',
+      path: '/home',
       component: Layout,
-      redirect: 'home',
       meta: {title: '首页'},
       children: [
         {
-          path: 'home',
-          name: 'home',
+          path: 'index/:id/:corpId',
           component: () => import('@/views/home/index')
-        },
-        {
-          path: 'overview',
-          name: 'overview',
-          component: () => import('@/views/overview/index')
         }
       ]
     }
