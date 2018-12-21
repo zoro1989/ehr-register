@@ -21,6 +21,17 @@ export default new Router({
           component: () => import('@/views/home/index')
         }
       ]
+    },
+    {
+      path: '/success',
+      component: Layout,
+      meta: {title: '成功'},
+      children: [
+        {
+          path: 'index',
+          component: () => import('@/views/success/index')
+        }
+      ]
     }
   ]
 })

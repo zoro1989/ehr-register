@@ -5,7 +5,9 @@ let apiPath = '/'
 const api = {
   employeeAttrQuery: apiPath + 'entry/form/query',
   employeeAttrGet: apiPath + 'entry/form/get/',
-  employeeAttrConfig: apiPath + 'entry/form/config/'
+  employeeAttrConfig: apiPath + 'entry/form/config/',
+  dictRegion: apiPath + 'api/dict/list/region',
+  employeeAttrSave: apiPath + 'entry/form/save'
 }
 
 const apiDict = {
