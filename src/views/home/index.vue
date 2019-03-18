@@ -2,7 +2,7 @@
   <div class="main-container">
     <div class="app-main">
       <div class="company">
-        <p>阿萨德！请如实填写以下信息，以便HR为您办理入职手续。</p>
+        <p>欢迎入职{{empName}}！请如实填写以下信息，以便HR为您办理入职手续。</p>
         <div class="join_table">
           <cube-form :options="options" :model="model" @validate="validateHandler" @submit="submitHandler">
             <div class="info-wrap" v-if="formGroups && formGroups.length > 0" v-for="group in formGroups" :key="group.id">
@@ -69,6 +69,7 @@ export default {
       model: {},
       regionList: [],
       formData: {},
+      empName: '',
       options: {
         scrollToInvalidField: true,
         layout: 'fresh' // classic fresh
@@ -87,10 +88,11 @@ export default {
   },
   methods: {
     listData() {
-      fetch('get', api.employeeAttrGet + this.id, {}).then((res) => {
+      fetch.call(this, 'get', api.employeeAttrGet + this.id, {}).then((res) => {
         this.formData = res.data
         let obj = JSON.parse(res.data.data)
-        fetch('get', api.employeeAttrConfig + this.corpId, {}).then((res) => {
+        this.empName = obj['empName']
+        fetch.call(this, 'get', api.employeeAttrConfig + this.corpId, {}).then((res) => {
           res.data.forEach((group) => {
             if (group.groupFlag === 1) {
               obj[group.fieldName] = obj[group.fieldName] ? obj[group.fieldName] : []
@@ -134,7 +136,7 @@ export default {
     saveForm() {
       console.log(this.model)
       this.formData.data = JSON.stringify(this.model)
-      fetch('post', api.employeeAttrSave, this.formData).then((res) => {
+      fetch.call(this, 'post', api.employeeAttrSave, this.formData).then((res) => {
         this.$router.push('/success/index')
       }).catch(() => {
       })

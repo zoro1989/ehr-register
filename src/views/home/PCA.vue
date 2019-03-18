@@ -27,7 +27,7 @@ export default {
     }
   },
   mounted() {
-    fetch('get', api.dictRegion, {}).then((res) => {
+    fetch.call(this, 'get', api.dictRegion, {}).then((res) => {
       let cityData = res.data
       cityData.forEach(province => {
         province.text = province.label

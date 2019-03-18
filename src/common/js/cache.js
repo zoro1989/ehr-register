@@ -14,7 +14,7 @@ export function refreshToken() {
       router.push('/login')
       return
     }
-    fetch('post', api.authRefresh, {token: tokenStr}).then((res) => {
+    fetch.call(this, 'post', api.authRefresh, {token: tokenStr}).then((res) => {
       storage.set(TOKEN_KEY, res.token)
     }).catch(() => {
     })

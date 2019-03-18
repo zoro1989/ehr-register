@@ -30,12 +30,14 @@ export default {
   data() {
     return {
       loginForm: {
-        empName: '王五',
-        mobile: '13364549821'
+        // empName: '王五',
+        // mobile: '13364549821',
+        empName: '',
+        mobile: '',
+        corpId: ''
       },
       loading: false,
-      redirect: undefined,
-      corpId: this.$route.query.corpId || ''
+      redirect: undefined
     }
   },
   watch: {
@@ -56,14 +58,17 @@ export default {
         toast.show()
         return
       }
-      this.loginForm.corpId = this.corpId
-      fetch('get', api.employeeAttrQuery, this.loginForm).then((res) => {
+      let str = location.href // 取得整个地址栏
+      let params = str.split('?')
+      let corpId = params[1].split('=')[1] || ''
+      this.loginForm.corpId = corpId
+      fetch.call(this, 'get', api.employeeAttrQuery, this.loginForm).then((res) => {
         const toast = this.$createToast({
           time: 1000,
           txt: '登录成功'
         })
         toast.show()
-        this.$router.push(`/home/index/${res.data}/${this.corpId}`)
+        this.$router.push(`/home/index/${res.data}/${this.loginForm.corpId}`)
       }).catch(() => {
       })
     }

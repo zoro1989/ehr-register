@@ -6,7 +6,7 @@ import NProgress from 'nprogress'
 
 axios.defaults.withCredentials = true
 
-let fetch = (type, url, params, isFormData = true, showMessage = false) => {
+let fetch = function(type, url, params, isFormData = true, showMessage = false) {
   NProgress.start()
   let service = axios.create({
     timeout: 30000

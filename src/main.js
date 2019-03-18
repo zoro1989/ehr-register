@@ -7,6 +7,11 @@ import fastclick from 'fastclick'
 import 'common/stylus/index.styl'
 import Cube from 'cube-ui'
 
+/* eslint-disable no-unused-vars */
+// import VConsole from 'vconsole'
+/* eslint-disable no-new */
+// new VConsole()
+
 Vue.use(Cube)
 Vue.config.productionTip = false
 /* eslint-disable no-new */
