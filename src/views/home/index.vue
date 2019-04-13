@@ -13,6 +13,8 @@
                     <div class="group-title"><span class="left">{{group.fieldLabel}}({{index + 1}})</span><span class="right" @click="deleteGroup(group.fieldName, index)" v-if="group.canClose === 0"><i class="cubeic-delete"></i></span></div>
                     <div v-for="child in group.children" :key="child.id">
                       <cube-form-item :field="{label: child.fieldLabel}">
+                        <cube-validator v-model="child.valid" v-if="child.fieldLabel === '姓名'" ref="validator" :model="item[child.fieldName]" :rules="{required: true}">
+                        </cube-validator>
                         <cube-input :placeholder="'请输入' + child.fieldLabel" v-model="item[child.fieldName]" v-if="child.fieldType === 1 || child.fieldType === 2"></cube-input>
                         <date-picker v-model="item[child.fieldName]" v-if="child.fieldType === 3 || child.fieldType === 4"></date-picker>
                         <cube-select
@@ -30,6 +32,8 @@
                 <template v-else>
                   <div v-for="child in group.children" :key="child.id">
                     <cube-form-item :field="{label: child.fieldLabel}">
+                      <cube-validator v-model="child.valid" v-if="child.fieldLabel === '姓名'" ref="validator" :model="model[child.fieldName]" :rules="{required: true}">
+                      </cube-validator>
                       <cube-input :placeholder="'请输入' + child.fieldLabel" v-model="model[child.fieldName]" v-if="child.fieldType === 1 || child.fieldType === 2"></cube-input>
                       <date-picker v-model="model[child.fieldName]" v-if="child.fieldType === 3 || child.fieldType === 4"></date-picker>
                       <cube-select
@@ -100,7 +104,9 @@ export default {
               group.children && group.children.forEach((child) => {
                 objChild[child.fieldName] = objChild[child.fieldName] ? objChild[child.fieldName] : ''
               })
-              obj[group.fieldName].push(objChild)
+              if (obj[group.fieldName].indexOf(objChild) < 0) {
+                obj[group.fieldName].push(objChild)
+              }
             } else {
               group.children && group.children.forEach((child) => {
                 obj[child.fieldName] = obj[child.fieldName] ? obj[child.fieldName] : ''
@@ -126,20 +132,19 @@ export default {
       }
     },
     validateHandler(result) {
-      this.validity = result.validity
-      this.valid = result.valid
-      console.log('validity', result.validity, result.valid, result.dirty, result.firstInvalidFieldIndex)
     },
     submitHandler(e) {
       console.log('submit')
     },
     saveForm() {
       console.log(this.model)
-      this.formData.data = JSON.stringify(this.model)
-      fetch.call(this, 'post', api.employeeAttrSave, this.formData).then((res) => {
-        this.$router.push('/success/index')
-      }).catch(() => {
-      })
+      if (JSON.stringify(this.formGroups).indexOf('"valid":false') < 0) {
+        this.formData.data = JSON.stringify(this.model)
+        fetch.call(this, 'post', api.employeeAttrSave, this.formData).then((res) => {
+          this.$router.push('/success/index')
+        }).catch(() => {
+        })
+      }
     },
     addGroup(group, children) {
       let copyGroup = {}

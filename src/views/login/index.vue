@@ -60,7 +60,8 @@ export default {
       }
       let str = location.href // 取得整个地址栏
       let params = str.split('?')
-      let corpId = params[1].split('=')[1] || ''
+      let paramsAll = params[1].split('&')
+      let corpId = paramsAll[0].split('=')[1] || ''
       this.loginForm.corpId = corpId
       fetch.call(this, 'get', api.employeeAttrQuery, this.loginForm).then((res) => {
         const toast = this.$createToast({

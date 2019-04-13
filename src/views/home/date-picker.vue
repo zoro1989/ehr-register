@@ -24,8 +24,8 @@ export default {
       if (!this.datePicker) {
         this.datePicker = this.$createDatePicker({
           title: '选择日期',
-          min: new Date(2008, 7, 8),
-          max: new Date(2020, 9, 20),
+          min: new Date(1950, 1, 1),
+          max: new Date(2050, 12, 31),
           value: this.value ? moment(this.value) : new Date(),
           onSelect: this.selectHandle,
           onCancel: this.cancelHandle
