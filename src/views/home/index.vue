@@ -80,6 +80,17 @@ export default {
       }
     }
   },
+  watch: {
+    'model.credentialsNo'(newval) {
+      if (newval.length === 18) {
+        let birthDay = this.getBirthdayFromIdCard(newval)
+        if (birthDay) {
+          console.log('11' + birthDay)
+          this.model['birthday'] = birthDay
+        }
+      }
+    }
+  },
   created() {
     this.listData()
   },
@@ -104,7 +115,10 @@ export default {
               group.children && group.children.forEach((child) => {
                 objChild[child.fieldName] = objChild[child.fieldName] ? objChild[child.fieldName] : ''
               })
-              if (obj[group.fieldName].indexOf(objChild) < 0) {
+              let index = obj[group.fieldName].findIndex((item) => {
+                return this.isObjectValueEqual(item, objChild)
+              })
+              if (index < 0 && objChild && obj[group.fieldName].length === 0) {
                 obj[group.fieldName].push(objChild)
               }
             } else {
@@ -155,6 +169,35 @@ export default {
     },
     deleteGroup(groupName, index) {
       this.model[groupName].splice(index, 1)
+    },
+    getBirthdayFromIdCard(idCard) {
+      var birthday = ''
+      if (idCard != null && idCard !== '') {
+        if (idCard.length === 15) {
+          birthday = '19' + idCard.substr(6, 6)
+        } else if (idCard.length === 18) {
+          birthday = idCard.substr(6, 8)
+        }
+
+        birthday = birthday.replace(/(.{4})(.{2})/, '$1-$2-')
+      }
+
+      return birthday
+    },
+    isObjectValueEqual(a, b) {
+      var aProps = Object.getOwnPropertyNames(a)
+      var bProps = Object.getOwnPropertyNames(b)
+      if (aProps.length !== bProps.length) {
+        return false
+      }
+
+      for (var i = 0; i < aProps.length; i++) {
+        var propName = aProps[i]
+        if (a[propName] !== b[propName]) {
+          return false
+        }
+      }
+      return true
     }
   }
 }

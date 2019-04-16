@@ -1,18 +1,18 @@
 <template>
-  <div class="login-container">
+  <div class="login-container" ref="outerWrapper">
     <div ref="loginForm" class="login-form">
       <h3 class="title">入职登记表</h3>
       <div class="el-form-item">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <cube-input class="el-input" placeholder="请输入姓名" v-model="loginForm.empName"></cube-input>
+        <cube-input class="el-input" placeholder="请输入姓名" @focus="inpFocus" @blur="inpBlur" v-model="loginForm.empName"></cube-input>
       </div>
       <div class="el-form-item">
         <span class="svg-container">
           <svg-icon icon-class="mobile" />
         </span>
-        <cube-input class="el-input" placeholder="请输入手机号" type="number" v-model="loginForm.mobile" @keyup.enter.native="handleLogin"></cube-input>
+        <cube-input class="el-input" placeholder="请输入手机号" @focus="inpFocus" @blur="inpBlur" type="number" v-model="loginForm.mobile" @keyup.enter.native="handleLogin"></cube-input>
       </div>
       <div>
         <cube-button type="primary" style="width:100%;" @click.native.prevent="handleLogin">登录</cube-button>
@@ -37,7 +37,8 @@ export default {
         corpId: ''
       },
       loading: false,
-      redirect: undefined
+      redirect: undefined,
+      isCanScroll: false
     }
   },
   watch: {
@@ -46,9 +47,20 @@ export default {
         this.redirect = route.query && route.query.redirect
       },
       immediate: true
+    },
+    'isCanScroll' (value) {
+      if (value) {
+        this.$refs.outerWrapper.scrollIntoView()
+      }
     }
   },
   methods: {
+    inpFocus () {
+      this.isCanScroll = false
+    },
+    inpBlur () {
+      this.isCanScroll = true
+    },
     handleLogin() {
       if (!validateTel(this.loginForm.mobile)) {
         const toast = this.$createToast({
@@ -81,17 +93,14 @@ export default {
   @import "~common/stylus/variable.styl"
   /* reset element-ui css */
   .login-container
-    position: fixed
     height: 100%
     width: 100%
     background-color: $color-background-d
     .login-form
-      position: absolute
-      left: 0
-      right: 0
+      width: 100%
       max-width: 100%
-      padding: 35px 35px 15px 35px
-      margin: 120px auto
+      padding: 155px 35px 15px 35px
+      margin: 0 auto
       .title
         font-size: 26px
         color: #eee
