@@ -13,7 +13,7 @@
                     <div class="group-title"><span class="left">{{group.fieldLabel}}({{index + 1}})</span><span class="right" @click="deleteGroup(group.fieldName, index)" v-if="group.canClose === 0"><i class="cubeic-delete"></i></span></div>
                     <div v-for="child in group.children" :key="child.id">
                       <cube-form-item :field="{label: child.fieldLabel}">
-                        <cube-validator v-model="child.valid" v-if="child.fieldLabel === '姓名'" ref="validator" :model="item[child.fieldName]" :rules="{required: true}">
+                        <cube-validator v-model="child.valid" v-if="child.required === 1" ref="validator" :model="item[child.fieldName]" :rules="{required: true}">
                         </cube-validator>
                         <cube-input :placeholder="'请输入' + child.fieldLabel" v-model="item[child.fieldName]" v-if="child.fieldType === 1 || child.fieldType === 2"></cube-input>
                         <date-picker v-model="item[child.fieldName]" v-if="child.fieldType === 3 || child.fieldType === 4"></date-picker>
@@ -32,7 +32,7 @@
                 <template v-else>
                   <div v-for="child in group.children" :key="child.id">
                     <cube-form-item :field="{label: child.fieldLabel}">
-                      <cube-validator v-model="child.valid" v-if="child.fieldLabel === '姓名'" ref="validator" :model="model[child.fieldName]" :rules="{required: true}">
+                      <cube-validator v-model="child.valid" v-if="child.required === 1" ref="validator" :model="model[child.fieldName]" :rules="{required: true}">
                       </cube-validator>
                       <cube-input :placeholder="'请输入' + child.fieldLabel" v-model="model[child.fieldName]" v-if="child.fieldType === 1 || child.fieldType === 2"></cube-input>
                       <date-picker v-model="model[child.fieldName]" v-if="child.fieldType === 3 || child.fieldType === 4"></date-picker>
